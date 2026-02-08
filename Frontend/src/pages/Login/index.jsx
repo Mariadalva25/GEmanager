@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import sofaImg from "../../Components/Img/sofa-unsplash.jpg";
 
 import {
@@ -52,9 +53,7 @@ function Login() {
             <SubmitButton type="submit">Entrar</SubmitButton>
 
             <RegisterLink>
-              <p>
-                Não tem uma conta? <a href="#">Cadastre-se</a>
-              </p>
+              <p> Não possui uma conta? <Link to="/Cadastro">Cadastre-se</Link></p>
             </RegisterLink>
           </Form>
         </LeftSide>
