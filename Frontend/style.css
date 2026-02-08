@@ -1,23 +1,23 @@
 /* tela de cadastro */
-.container {
+/*.container {
     background-color: #9cd3c5;
     height: 620px;
     width: 500px;
-    /*border: 1px solid red;*/
+    /*border: 1px solid red;
     padding: 20px;
     display: flex;
     margin-left: 690px;
     margin-top: 180px;
     border-radius: 5px;
 }
-
-.cadastro {
+*/
+/*.cadastro {
     display: flex;
     flex-direction: column;
     padding: 10px;
     width: 450px;
     height: 450px;
-   /* border: 1px solid yellow;*/
+   /* border: 1px solid yellow;
     margin-left: 20px;
 }
 
@@ -27,7 +27,7 @@
     display: flex;
     width: 170px;
     height: 40px;
-    /*border: 1px solid yellow;*/
+    /*border: 1px solid yellow;
     justify-content: center;
     margin-left: 150px;
     border-radius: 10px;
@@ -38,7 +38,7 @@
     color: #fff;
     width: 430px;
     height: 55px;
-    /*border: 1px solid yellow;*/
+    /*border: 1px solid yellow;
     display: flex;
     align-items: center;
     padding: 10px;
@@ -56,4 +56,64 @@
     justify-content: center;
     margin-left: 190px;
     margin-top: 20px;
+}*/
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.login-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    width: 300px;
+}
+
+.form-login h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box; /* Garante padding interno */
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+p {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
 }

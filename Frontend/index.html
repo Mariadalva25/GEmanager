@@ -1,29 +1,34 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <link rel="stylesheet" href="style.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-    <title>GManager</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <div class="container">
-      <div class="cadastro">
-        <h1> Cadastro </h1>
-        <h3> Nome completo: </h3>
-        <h3> E-mail: </h3>
-        <h3> Senha: </h3>
-        <button> Cadastrar!</button>
-      </br>
-    </br>
-        <h3> E-mail: </h3>
-        <h3> Senha: </h3>
-        <button> Entrar </button>  
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Poppins:wght@400;700&display=swap"
+    rel="stylesheet">
+  <title>GManager</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <div class="login-container">
+    <form class="form-login">
+      <h2>Entrar</h2>
+      <div class="input-group">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" required>
       </div>
-    </div>
+      <div class="input-group">
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" name="senha" required>
+      </div>
+      <button type="submit">Acessar</button>
+      <p>Ainda não tem conta? <a href="cadastro/cadastro.html">Cadastre-se</a></p>
+    </form>
+  </div>
   <script type="module" src="/src/main.jsx"></script>
- </body>
+</body>
+
 </html>
