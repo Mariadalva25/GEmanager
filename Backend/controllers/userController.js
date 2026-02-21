@@ -1,11 +1,16 @@
-const User = require('../models/User');
+const db = require('../config/db');
 
-exports.registrarUsuario = async (req, res) => {
-    try {
-        const { username, email, password } = req.body;
-        await User.Create(NamedNodeMap, email, password);
-        res.status(201).json({ message: 'Usuário registrado com sucesso!' });
-    } catch (error) {
-        res.status(500).json({ error: 'Erro ao salvar no banco.'});
+exports.cadastrarUsuario = (req, res) => {
+  const { nome, email, senha } = req.body;
+
+  const sql = 'INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)';
+
+  db.query(sql, [nome, email, senha], (err, result) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ erro: 'Erro ao cadastrar' });
     }
+
+    res.json({ mensagem: 'Cadastrado com sucesso!' });
+  });
 };
