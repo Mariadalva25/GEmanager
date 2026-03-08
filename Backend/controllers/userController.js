@@ -13,4 +13,6 @@ exports.cadastrarUsuario = (req, res) => {
 
     res.json({ mensagem: 'Cadastrado com sucesso!' });
   });
+
+  
 };
