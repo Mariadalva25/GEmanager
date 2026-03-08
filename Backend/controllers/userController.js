@@ -5,7 +5,7 @@ exports.cadastrarUsuario = (req, res) => {
 
   const sql = 'INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)';
 
-  db.query(sql, [nome, email, senha], (err, result) => {
+  db.query(sql, [nome,email,senha], (err, result) => {
     if (err) {
       console.log(err);
       return res.status(500).json({ erro: 'Erro ao cadastrar' });
