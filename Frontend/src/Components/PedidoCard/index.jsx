@@ -7,11 +7,11 @@ import {
   Info,
   Label,
   Value,
-  DetailsButton
-} from "./styles";
+  DetailsButton,
+  TecidoSelect
+} from "./style";
 
-function PedidoCard({ pedido }) {
-
+function PedidoCard({ pedido, onTecidoChange }) {
   return (
     <Card>
 
@@ -29,7 +29,25 @@ function PedidoCard({ pedido }) {
 
       <Info>
         <Label>Status:</Label>
-        <Value>{pedido.status}</Value>
+        <Value>{pedido.andamento}</Value>
+      </Info>
+
+      <Info>
+        <Label>Prioridade:</Label>
+        <Value>{pedido.prioridade}</Value>
+      </Info>
+
+      <Info>
+        <Label>Tecido:</Label>
+        <TecidoSelect
+          value={pedido.tecido || ""}
+          onChange={(e) => onTecidoChange(pedido.id, e.target.value)}
+        >
+          <option value="">Selecionar tecido</option>
+          <option value="Suede Luxo">Suede Luxo</option>
+          <option value="Courinho">Courinho</option>
+          <option value="Linho">Linho</option>
+        </TecidoSelect>
       </Info>
 
       <Link to={`/pedido/${pedido.id}`}>

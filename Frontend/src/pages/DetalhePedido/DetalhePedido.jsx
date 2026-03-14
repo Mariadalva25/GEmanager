@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import {
@@ -13,27 +13,44 @@ import {
   Label,
   Value,
   BackButton
-} from "./styles";
+} from "./style";
 
 function DetalhePedido() {
-
   const { id } = useParams();
+  const [pedido, setPedido] = useState(null); // estado inicial vazio
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Simulação de dados (depois virá do backend)
-  const pedido = {
-    id: id,
-    produto: "Sofá Moderno",
-    quantidade: 2,
-    endereco: "Rua Exemplo, 123",
-    status: "Em processamento"
-  };
+  useEffect(() => {
+    // Busca o pedido no backend pelo id
+    fetch(`https://api.exemplo.com/pedidos/${id}`) // substitua pela sua URL real
+      .then((res) => {
+        if (!res.ok) throw new Error("Pedido não encontrado");
+        return res.json();
+      })
+      .then((data) => {
+        setPedido(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, [id]);
+
+  if (loading) {
+    return <Container><p style={{padding: "40px", textAlign:"center"}}>Carregando pedido...</p></Container>;
+  }
+
+  if (error) {
+    return <Container><p style={{padding: "40px", textAlign:"center", color:"red"}}>{error}</p></Container>;
+  }
 
   return (
     <Container>
 
       <Header>
         <Logo>Minha Loja</Logo>
-
         <Menu>
           <MenuItem><Link to="/">Home</Link></MenuItem>
           <MenuItem><Link to="/produtos">Produtos</Link></MenuItem>
@@ -42,7 +59,6 @@ function DetalhePedido() {
       </Header>
 
       <DetailContainer>
-
         <Title>Detalhes do Pedido #{pedido.id}</Title>
 
         <Info>
@@ -68,9 +84,7 @@ function DetalhePedido() {
         <Link to="/produtos">
           <BackButton>Voltar para Produtos</BackButton>
         </Link>
-
       </DetailContainer>
-
     </Container>
   );
 }

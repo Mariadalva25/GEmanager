@@ -1,108 +1,105 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-
-import {
-  Container,
-  Header,
-  Logo,
-  Menu,
-  MenuItem,
-  FormContainer,
-  Title,
-  InputGroup,
-  Label,
-  Input,
-  Select,
-  SubmitButton
-} from "./styles";
+import { Card, Title, Label, Input, Select, Button } from "./style";
 
 function CriarPedido() {
+  const [produto, setProduto] = useState("");
+  const [quantidade, setQuantidade] = useState("");
+  const [andamento, setAndamento] = useState("");
+  const [prioridade, setPrioridade] = useState("");
+  const [tecido, setTecido] = useState("");
 
-  const [pedido, setPedido] = useState({
-    produto: "",
-    quantidade: 1,
-    endereco: ""
-  });
-
-  const handleChange = (e) => {
-    setPedido({
-      ...pedido,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Pedido enviado:", pedido);
-    alert("Pedido criado com sucesso!");
+
+    const novoPedido = {
+      produto,
+      quantidade,
+      andamento,
+      prioridade,
+      tecido,
+    };
+
+    try {
+      const response = await fetch("http://localhost:3000/pedidos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(novoPedido),
+      });
+
+      if (!response.ok) throw new Error("Erro ao criar pedido");
+
+      alert("Pedido criado com sucesso!");
+      // Resetar formulário
+      setProduto("");
+      setQuantidade("");
+      setAndamento("");
+      setPrioridade("");
+      setTecido("");
+    } catch (error) {
+      console.error(error);
+      alert("Falha ao criar pedido");
+    }
   };
 
   return (
-    <Container>
+    <Card>
+      <Title>Criar Pedido</Title>
+      <form onSubmit={handleSubmit}>
+        <Label>Produto:</Label>
+        <Input
+          type="text"
+          value={produto}
+          onChange={(e) => setProduto(e.target.value)}
+          required
+        />
 
-      <Header>
-        <Logo>Minha Loja</Logo>
+        <Label>Quantidade:</Label>
+        <Input
+          type="number"
+          value={quantidade}
+          onChange={(e) => setQuantidade(e.target.value)}
+          required
+        />
 
-        <Menu>
-          <MenuItem><Link to="/">Home</Link></MenuItem>
-          <MenuItem><Link to="/produtos">Produtos</Link></MenuItem>
-          <MenuItem><Link to="/login">Login</Link></MenuItem>
-        </Menu>
-      </Header>
+        <Label>Andamento:</Label>
+        <Select
+          value={andamento}
+          onChange={(e) => setAndamento(e.target.value)}
+          required
+        >
+          <option value="">Selecionar</option>
+          <option value="Não iniciado">Não iniciado</option>
+          <option value="Em produção">Em produção</option>
+          <option value="Entregue">Entregue</option>
+        </Select>
 
-      <FormContainer>
+        <Label>Prioridade:</Label>
+        <Select
+          value={prioridade}
+          onChange={(e) => setPrioridade(e.target.value)}
+          required
+        >
+          <option value="">Selecionar</option>
+          <option value="Alta">Alta</option>
+          <option value="Média">Média</option>
+          <option value="Baixa">Baixa</option>
+        </Select>
 
-        <Title>Criar Pedido</Title>
+        <Label>Tecido:</Label>
+        <Select
+          value={tecido}
+          onChange={(e) => setTecido(e.target.value)}
+          required
+        >
+          <option value="">Selecionar</option>
+          <option value="Suede Luxo">Suede Luxo</option>
+          <option value="Courinho">Courinho</option>
+          <option value="Linho">Linho</option>
+        </Select>
 
-        <form onSubmit={handleSubmit}>
-
-          <InputGroup>
-            <Label>Produto</Label>
-            <Select
-              name="produto"
-              value={pedido.produto}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Selecione um produto</option>
-              <option value="Sofá Moderno">Sofá Moderno</option>
-              <option value="Poltrona Confortável">Poltrona Confortável</option>
-              <option value="Sofá Luxo">Sofá Luxo</option>
-            </Select>
-          </InputGroup>
-
-          <InputGroup>
-            <Label>Quantidade</Label>
-            <Input
-              type="number"
-              name="quantidade"
-              min="1"
-              value={pedido.quantidade}
-              onChange={handleChange}
-            />
-          </InputGroup>
-
-          <InputGroup>
-            <Label>Endereço de entrega</Label>
-            <Input
-              type="text"
-              name="endereco"
-              placeholder="Digite seu endereço"
-              value={pedido.endereco}
-              onChange={handleChange}
-              required
-            />
-          </InputGroup>
-
-          <SubmitButton type="submit">
-            Finalizar Pedido
-          </SubmitButton>
-
-        </form>
-
-      </FormContainer>
-
-    </Container>
+        <Button type="submit">Salvar Pedido</Button>
+      </form>
+    </Card>
   );
 }
 

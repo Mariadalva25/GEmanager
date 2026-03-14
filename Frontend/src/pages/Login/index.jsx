@@ -1,6 +1,5 @@
-import { useState } from 'react';
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import sofaImg from "../../Components/Img/sofa-unsplash.jpg";
 
 import {
@@ -15,34 +14,53 @@ import {
   Remember,
   SubmitButton,
   RegisterLink
-} from './styles';
+} from "./styles"; 
 
 function Login() {
+  const navigate = useNavigate();
 
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [mensagem, setMensagem] = useState('');
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [mensagem, setMensagem] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setMensagem("");
 
-    const response = await fetch('http://localhost:3000/users/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ email, senha })
-    });
+    try {
+      const response = await fetch("http://localhost:3000/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, senha })
+      });
 
-    const data = await response.json();
+      let data = {};
+      const text = await response.text();
+      try {
+        data = JSON.parse(text);
+      } catch {
+        throw new Error("Resposta inválida do servidor");
+      }
 
-    setMensagem(data.mensagem || data.erro);
+      if (response.ok) {
+        localStorage.setItem("usuario", JSON.stringify(data));
+
+        setMensagem("Login realizado com sucesso!");
+        navigate("/home");
+      } else {
+        setMensagem(data.erro || "Erro no login");
+      }
+    } catch (error) {
+      console.error(error);
+      setMensagem("Erro ao conectar com o servidor");
+    }
   };
 
   return (
     <Container>
       <Wrapper>
-
         <RightSide>
           <img src={sofaImg} alt="Imagem de sofá" />
         </RightSide>
@@ -51,13 +69,13 @@ function Login() {
           <Title>Login</Title>
 
           <Form onSubmit={handleLogin}>
-
             <InputBox>
               <Input
                 placeholder="Email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required
               />
             </InputBox>
 
@@ -67,6 +85,7 @@ function Login() {
                 type="password"
                 value={senha}
                 onChange={(e) => setSenha(e.target.value)}
+                required
               />
             </InputBox>
 
@@ -75,25 +94,19 @@ function Login() {
                 <input type="checkbox" />
                 Lembrar minha senha
               </label>
-              <a href="#">Esqueci minha senha</a>
             </Remember>
 
-
-            <SubmitButton type onClick={handleLogin}>
-              Entrar
-            </SubmitButton>
+            <SubmitButton type="submit">Entrar</SubmitButton>
 
             {mensagem && <p>{mensagem}</p>}
 
             <RegisterLink>
               <p>
-                Não possui uma conta? <Link to="/Cadastro">Cadastre-se</Link>
+                Não possui uma conta? <Link to="/cadastro">Cadastre-se</Link>
               </p>
             </RegisterLink>
-
           </Form>
         </LeftSide>
-
       </Wrapper>
     </Container>
   );

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import {
@@ -12,38 +12,92 @@ import {
   Description,
   ButtonGroup,
   Button
-} from "./styles";
+} from "./style";
 
 function Home() {
+
+  const usuario = JSON.parse(localStorage.getItem("usuario"));
+  const [pedidos, setPedidos] = useState([]);
+
+  useEffect(() => {
+
+    const buscarPedidos = async () => {
+
+      try {
+
+        const response = await fetch("http://localhost:3000/pedidos");
+        const data = await response.json();
+
+        setPedidos(data);
+
+      } catch (error) {
+        console.error("Erro ao buscar pedidos", error);
+      }
+
+    };
+
+    buscarPedidos();
+
+  }, []);
+
   return (
     <Container>
 
       <Header>
-        <Logo>Minha Loja</Logo>
+        <Logo>Gerenciador de Pedidos</Logo>
 
         <Menu>
           <MenuItem><Link to="/">Home</Link></MenuItem>
           <MenuItem><Link to="/produtos">Produtos</Link></MenuItem>
-          <MenuItem><Link to="/login">Login</Link></MenuItem>
+
+          {usuario ? (
+            <MenuItem>Olá {usuario.nome}</MenuItem>
+          ) : (
+            <MenuItem><Link to="/">Login</Link></MenuItem>
+          )}
         </Menu>
       </Header>
 
       <Main>
-        <Title>Bem-vindo à nossa loja</Title>
+
+        <Title>
+          Bem-vindo {usuario ? usuario.nome : ""}
+        </Title>
 
         <Description>
-          Aqui você encontra móveis modernos e confortáveis para sua casa.
+          Pedidos recentes
         </Description>
 
+        {pedidos.slice(0, 3).map((pedido) => (
+
+          <div key={pedido.id}>
+
+            <p><strong>Produto:</strong> {pedido.produto}</p>
+            <p><strong>Quantidade:</strong> {pedido.quantidade}</p>
+            <p><strong>Status:</strong> {pedido.status}</p>
+
+            <Link to={`/pedido/${pedido.id}`}>
+              Ver detalhes
+            </Link>
+
+            <hr />
+
+          </div>
+
+        ))}
+
         <ButtonGroup>
-          <Link to="/produtos">
-            <Button>Ver Produtos</Button>
+
+          <Link to="/pedido">
+            <Button>Adicionar Pedido</Button>
           </Link>
 
-          <Link to="/Cadastro">
-            <Button>Criar Conta</Button>
+          <Link to="/pedidos">
+            <Button>Ver Todos os Pedidos</Button>
           </Link>
+
         </ButtonGroup>
+
       </Main>
 
     </Container>

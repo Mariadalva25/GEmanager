@@ -1,15 +1,16 @@
 import styled from "styled-components";
 
 export const Card = styled.div`
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 3px 8px rgba(0,0,0,0.1);
-  width: 250px;
+  background: #fff;
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  box-shadow: 0 0 4px rgba(0,0,0,0.1);
 `;
 
 export const Title = styled.h3`
-  margin-bottom: 10px;
+  font-size: 18px;
+  margin-bottom: 12px;
 `;
 
 export const Info = styled.div`
@@ -23,20 +24,26 @@ export const Label = styled.span`
 `;
 
 export const Value = styled.span`
-  color: #444;
+  font-weight: normal;
+`;
+
+export const TecidoSelect = styled.select`
+  padding: 4px 8px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
 `;
 
 export const DetailsButton = styled.button`
-  margin-top: 10px;
-  width: 100%;
-  padding: 8px;
+  background-color: #007bff;
+  color: #fff;
   border: none;
-  background: #2c2c2c;
-  color: white;
-  border-radius: 5px;
+  padding: 6px 12px;
+  border-radius: 4px;
   cursor: pointer;
+  margin-top: 8px;
 
   &:hover {
-    background: #444;
+    background-color: #0056b3;
   }
 `;
