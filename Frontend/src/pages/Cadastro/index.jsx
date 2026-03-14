@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import api from "../../services/API";
 import {
   Container,
   Wrapper,
@@ -18,7 +19,7 @@ function Cadastro() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (password !== confirmPassword) {
@@ -26,11 +27,25 @@ function Cadastro() {
       return;
     }
 
-    console.log({
-      nome,
-      email,
-      password
-    });
+    try {
+      const response = await api.post("/usuarios", {
+        nome,
+        email,
+        senha: password
+      });
+
+      alert("Usuário cadastrado com sucesso!");
+      console.log(response.data);
+
+      setNome('');
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
+
+    } catch (error) {
+      console.error("Erro ao cadastrar:", error);
+      alert("Erro ao cadastrar usuário");
+    }
   };
 
   return (
@@ -42,7 +57,7 @@ function Cadastro() {
 
           <Form onSubmit={handleSubmit}>
             <InputBox>
-              <label>Nome Completo</label>
+              <label>Nome</label>
               <Input
                 type="text"
                 placeholder="Digite seu nome"
@@ -85,7 +100,9 @@ function Cadastro() {
               />
             </InputBox>
 
-            <SubmitButton type="submit">Cadastrar</SubmitButton>
+            <SubmitButton type="submit">
+              Cadastrar
+            </SubmitButton>
 
             <RegisterLink>
               <p>
