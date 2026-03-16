@@ -1,61 +1,49 @@
-import React from "react";
-import { Link } from "react-router-dom";
+function PedidoCard({ pedido }) {
 
-import {
-  Card,
-  Title,
-  Info,
-  Label,
-  Value,
-  DetailsButton,
-  TecidoSelect
-} from "./style";
+  function corPrioridade() {
 
-function PedidoCard({ pedido, onTecidoChange }) {
+    if (pedido.prioridade === "alta") {
+      return "#ff6b6b";
+    }
+
+    if (pedido.prioridade === "media") {
+      return "#f7b731";
+    }
+
+    return "#2ecc71";
+  }
+
   return (
-    <Card>
 
-      <Title>Pedido #{pedido.id}</Title>
+    <div
+      style={{
+        borderLeft: `6px solid ${corPrioridade()}`,
+        background: "#fff",
+        padding: "15px",
+        marginBottom: "15px",
+        borderRadius: "6px",
+        boxShadow: "0px 2px 5px rgba(0,0,0,0.1)"
+      }}
+    >
 
-      <Info>
-        <Label>Produto:</Label>
-        <Value>{pedido.produto}</Value>
-      </Info>
+      <h3>{pedido.produto}</h3>
 
-      <Info>
-        <Label>Quantidade:</Label>
-        <Value>{pedido.quantidade}</Value>
-      </Info>
+      <p><strong>Cliente:</strong> {pedido.cliente}</p>
 
-      <Info>
-        <Label>Status:</Label>
-        <Value>{pedido.andamento}</Value>
-      </Info>
+      <p><strong>Endereço:</strong> {pedido.endereco}</p>
 
-      <Info>
-        <Label>Prioridade:</Label>
-        <Value>{pedido.prioridade}</Value>
-      </Info>
+      <p><strong>Tecido:</strong> {pedido.tecido}</p>
 
-      <Info>
-        <Label>Tecido:</Label>
-        <TecidoSelect
-          value={pedido.tecido || ""}
-          onChange={(e) => onTecidoChange(pedido.id, e.target.value)}
-        >
-          <option value="">Selecionar tecido</option>
-          <option value="Suede Luxo">Suede Luxo</option>
-          <option value="Courinho">Courinho</option>
-          <option value="Linho">Linho</option>
-        </TecidoSelect>
-      </Info>
+      <p><strong>Andamento:</strong> {pedido.andamento}</p>
 
-      <Link to={`/pedido/${pedido.id}`}>
-        <DetailsButton>Ver detalhes</DetailsButton>
-      </Link>
+      <p><strong>Entrega:</strong> {pedido.entrega}</p>
 
-    </Card>
+      <p><strong>Prioridade:</strong> {pedido.prioridade}</p>
+
+    </div>
+
   );
+
 }
 
 export default PedidoCard;

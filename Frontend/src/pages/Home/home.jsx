@@ -1,106 +1,91 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 
-import {
-  Container,
-  Header,
-  Logo,
-  Menu,
-  MenuItem,
-  Main,
-  Title,
-  Description,
-  ButtonGroup,
-  Button
-} from "./style";
+import Sidebar from "../../Components/Sidebar";
+import Header from "../../Components/Header";
+import PedidoCard from "../../Components/PedidoCard";
+import CriarPedido from "../CriarPedido/CriarPedido";
+import CadastroClientes from "../../Components/CadastroClientes/CadastroClientes"; // CORRETO
+import AlertaEntregas from "../../Components/AlertaEntregas";
 
 function Home() {
-
-  const usuario = JSON.parse(localStorage.getItem("usuario"));
   const [pedidos, setPedidos] = useState([]);
+  const [abrirFormPedido, setAbrirFormPedido] = useState(false);
+  const [abrirFormCliente, setAbrirFormCliente] = useState(false);
+
+  // Buscar pedidos do backend
+  const fetchPedidos = () => {
+    fetch("http://localhost:3000/pedidos")
+      .then(res => res.json())
+      .then(data => setPedidos(data));
+  };
 
   useEffect(() => {
-
-    const buscarPedidos = async () => {
-
-      try {
-
-        const response = await fetch("http://localhost:3000/pedidos");
-        const data = await response.json();
-
-        setPedidos(data);
-
-      } catch (error) {
-        console.error("Erro ao buscar pedidos", error);
-      }
-
-    };
-
-    buscarPedidos();
-
+    fetchPedidos();
   }, []);
 
   return (
-    <Container>
+    <div style={{ display: "flex" }}>
+      <Sidebar />
 
-      <Header>
-        <Logo>Gerenciador de Pedidos</Logo>
+      <div style={{ width: "100%", padding: "20px" }}>
+        <Header />
 
-        <Menu>
-          <MenuItem><Link to="/">Home</Link></MenuItem>
-          <MenuItem><Link to="/produtos">Produtos</Link></MenuItem>
+        {/* Botões para abrir formulários */}
+        <div style={{ marginBottom: "20px" }}>
+          <button
+            onClick={() => setAbrirFormPedido(true)}
+            style={{
+              padding: "10px 15px",
+              background: "#4CAF50",
+              color: "#fff",
+              border: "none",
+              borderRadius: "5px",
+              marginRight: "10px",
+            }}
+          >
+            + Adicionar Pedido
+          </button>
 
-          {usuario ? (
-            <MenuItem>Olá {usuario.nome}</MenuItem>
-          ) : (
-            <MenuItem><Link to="/">Login</Link></MenuItem>
-          )}
-        </Menu>
-      </Header>
+          <button
+            onClick={() => setAbrirFormCliente(true)}
+            style={{
+              padding: "10px 15px",
+              background: "#2196F3",
+              color: "#fff",
+              border: "none",
+              borderRadius: "5px",
+            }}
+          >
+            + Adicionar Cliente
+          </button>
+        </div>
 
-      <Main>
+        {/* Formulário de Pedido */}
+        {abrirFormPedido && (
+          <CriarPedido
+            fechar={() => setAbrirFormPedido(false)}
+            atualizarLista={fetchPedidos} // atualiza lista após criar pedido
+          />
+        )}
 
-        <Title>
-          Bem-vindo {usuario ? usuario.nome : ""}
-        </Title>
+        {/* Formulário de Cliente */}
+        {abrirFormCliente && (
+          <CadastroClientes
+            fechar={() => setAbrirFormCliente(false)}
+          />
+        )}
 
-        <Description>
-          Pedidos recentes
-        </Description>
-
-        {pedidos.slice(0, 3).map((pedido) => (
-
-          <div key={pedido.id}>
-
-            <p><strong>Produto:</strong> {pedido.produto}</p>
-            <p><strong>Quantidade:</strong> {pedido.quantidade}</p>
-            <p><strong>Status:</strong> {pedido.status}</p>
-
-            <Link to={`/pedido/${pedido.id}`}>
-              Ver detalhes
-            </Link>
-
-            <hr />
-
-          </div>
-
-        ))}
-
-        <ButtonGroup>
-
-          <Link to="/pedido">
-            <Button>Adicionar Pedido</Button>
-          </Link>
-
-          <Link to="/pedidos">
-            <Button>Ver Todos os Pedidos</Button>
-          </Link>
-
-        </ButtonGroup>
-
-      </Main>
-
-    </Container>
+        {/* Lista de pedidos */}
+        <h2>Pedidos</h2>
+        {pedidos.length === 0 ? (
+          <p>Nenhum pedido cadastrado.</p>
+        ) : (
+          pedidos.map((pedido) => (
+            <PedidoCard key={pedido.id} pedido={pedido} />
+          ))
+        )}
+      </div>
+    </div>
   );
 }
 
