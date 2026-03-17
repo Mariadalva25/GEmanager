@@ -28,7 +28,7 @@ function Cadastro() {
     }
 
     try {
-      const response = await api.post("/usuarios", {
+      const response = await api.post("users/usuarios", {
         nome,
         email,
         senha: password
