@@ -4,10 +4,8 @@ import GlobalStyle from "./Components/GlobalStyle";
 
 import Login from "./pages/Login";
 import Cadastro from "./pages/Cadastro";
-import Home from "./pages/Home/Home";
-import CriarPedido from "./pages/CriarPedido/CriarPedido";
+import Home from "./pages/Home/home";
 import Pedidos from "./pages/Pedidos/Pedidos";
-
 
 function App() {
   return (
@@ -16,18 +14,13 @@ function App() {
       <GlobalStyle />
 
       <Routes>
-
+        {/* PUBLIC */}
         <Route path="/" element={<Login />} />
         <Route path="/cadastro" element={<Cadastro />} />
 
+        {/* SISTEMA */}
         <Route path="/home" element={<Home />} />
-
-        <Route path="/pedido" element={<CriarPedido />} />
-
         <Route path="/pedidos" element={<Pedidos />} />
-
-
-
       </Routes>
 
     </BrowserRouter>

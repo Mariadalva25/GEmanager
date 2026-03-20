@@ -1,15 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const controller = require('../controllers/clientes.Controller');
 
-// Importar o controller corretamente
-const customerController = require('../controllers/customerController');
-
-// Rotas de cliente
-
-// Cadastrar cliente
-router.post('/clientes', customerController.cadastrarClientes);
-
-// Listar clientes
-router.get('/clientes', customerController.listarClientes);
+router.get('/', controller.getAll);
+router.post('/', controller.create);
+router.put('/:id', controller.update);
+router.delete('/:id', controller.delete);
 
 module.exports = router;

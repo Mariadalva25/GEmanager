@@ -1,23 +1,10 @@
-const db = require("../config/db");
+const db = require('../config/db');
 
 const Clientes = {
-
-  getAll: (cb) => {
-    db.query("SELECT * FROM clientes", cb);
-  },
-
-  create: (data, cb) => {
-    db.query("INSERT INTO clientes SET ?", data, cb);
-  },
-
-  update: (id, data, cb) => {
-    db.query("UPDATE clientes SET ? WHERE id=?", [data, id], cb);
-  },
-
-  delete: (id, cb) => {
-    db.query("DELETE FROM clientes WHERE id=?", [id], cb);
-  }
-
+  getAll: (cb) => db.query("SELECT * FROM clientes WHERE ativo=1", cb),
+  create: (data, cb) => db.query("INSERT INTO clientes SET ?", data, cb),
+  update: (id, data, cb) => db.query("UPDATE clientes SET ? WHERE id=?", [data, id], cb),
+  delete: (id, cb) => db.query("UPDATE clientes SET ativo=0 WHERE id=?", [id], cb) 
 };
 
 module.exports = Clientes;

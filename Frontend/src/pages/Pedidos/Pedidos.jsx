@@ -8,27 +8,35 @@ export default function Pedidos() {
 
   const API = "http://localhost:3000/pedidos";
 
-  useEffect(() => { fetch(); }, []);
+  useEffect(() => {
+    carregarDados();
+  }, []);
 
-  const fetch = async () => {
+  const carregarDados = async () => {
     const res = await axios.get(API);
     setDados(res.data);
   };
 
   const salvar = async () => {
-    if (edit) {
-      await axios.put(`${API}/${edit}`, form);
-    } else {
-      await axios.post(API, form);
+    try {
+      if (edit) {
+        await axios.put(`${API}/${edit}`, form);
+      } else {
+        await axios.post(API, form);
+      }
+
+      setForm({});
+      setEdit(null);
+      carregarDados();
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao salvar");
     }
-    setForm({});
-    setEdit(null);
-    fetch();
   };
 
   const deletar = async (id) => {
     await axios.delete(`${API}/${id}`);
-    fetch();
+    carregarDados();
   };
 
   const editar = (item) => {
@@ -40,14 +48,29 @@ export default function Pedidos() {
     <div>
       <h1>Pedidos</h1>
 
-      <input placeholder="Nome"
-        onChange={e => setForm({ ...form, nome: e.target.value })} />
+      {/* FORM */}
+      <input
+        placeholder="Nome"
+        value={form.nome || ""}
+        onChange={(e) => setForm({ ...form, nome: e.target.value })}
+      />
+
+      <input
+        type="date"
+        value={form.data_entrega || ""}
+        onChange={(e) => setForm({ ...form, data_entrega: e.target.value })}
+      />
 
       <button onClick={salvar}>Salvar</button>
 
-      {dados.map(d => (
-        <div key={d.id}>
-          <p>{d.nome}</p>
+      {/* LISTA */}
+      {dados.map((d) => (
+        <div key={d.id} style={{ border: "1px solid #ccc", margin: 10 }}>
+          <p><b>Pedido:</b> {d.nome}</p>
+          <p><b>Cliente:</b> {d.cliente_nome}</p>
+          <p><b>Produto:</b> {d.produto_nome}</p>
+          <p><b>Status:</b> {d.andamento}</p>
+
           <button onClick={() => editar(d)}>Editar</button>
           <button onClick={() => deletar(d.id)}>Excluir</button>
         </div>

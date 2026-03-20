@@ -6,17 +6,19 @@ export default function Home() {
 
   useEffect(() => {
     axios.get("http://localhost:3000/pedidos/ativos")
-      .then(res => setPedidos(res.data));
+      .then(res => setPedidos(res.data))
+      .catch(err => console.error(err));
   }, []);
 
   return (
     <div>
-      <h1>Em andamento</h1>
+      <h1>Pedidos em andamento</h1>
 
       {pedidos.map(p => (
         <div key={p.id}>
           <h3>{p.nome}</h3>
-          <p>{p.andamento}</p>
+          <p>Status: {p.andamento}</p>
+          <p>Cliente: {p.cliente_nome}</p>
         </div>
       ))}
     </div>
