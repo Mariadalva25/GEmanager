@@ -1,32 +1,14 @@
 import { Link } from "react-router-dom";
+import * as S from "./styles";
 
-function Sidebar(){
-
-  return(
-
-    <div style={{
-      width:"200px",
-      height:"100vh",
-      background:"#eee",
-      padding:"20px"
-    }}>
-
-      <h3>Menu</h3>
-
+export default function Sidebar() {
+  return (
+    <S.Container>
+      <h2>Menu</h2>
       <Link to="/">Home</Link>
-
-      <br/><br/>
-
       <Link to="/pedidos">Pedidos</Link>
-
-      <br/><br/>
-
+      <Link to="/clientes">Clientes</Link>
       <Link to="/produtos">Produtos</Link>
-
-    </div>
-
-  )
-
+    </S.Container>
+  );
 }
-
-export default Sidebar

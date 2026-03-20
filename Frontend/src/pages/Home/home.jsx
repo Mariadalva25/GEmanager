@@ -1,92 +1,24 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-import Sidebar from "../../Components/Sidebar";
-import Header from "../../Components/Header";
-import PedidoCard from "../../Components/PedidoCard";
-import CriarPedido from "../CriarPedido/CriarPedido";
-import CadastroClientes from "../../Components/CadastroClientes/CadastroClientes"; // CORRETO
-import AlertaEntregas from "../../Components/AlertaEntregas";
-
-function Home() {
+export default function Home() {
   const [pedidos, setPedidos] = useState([]);
-  const [abrirFormPedido, setAbrirFormPedido] = useState(false);
-  const [abrirFormCliente, setAbrirFormCliente] = useState(false);
-
-  // Buscar pedidos do backend
-  const fetchPedidos = () => {
-    fetch("http://localhost:3000/pedidos")
-      .then(res => res.json())
-      .then(data => setPedidos(data));
-  };
 
   useEffect(() => {
-    fetchPedidos();
+    axios.get("http://localhost:3000/pedidos/ativos")
+      .then(res => setPedidos(res.data));
   }, []);
 
   return (
-    <div style={{ display: "flex" }}>
-      <Sidebar />
+    <div>
+      <h1>Em andamento</h1>
 
-      <div style={{ width: "100%", padding: "20px" }}>
-        <Header />
-
-        {/* Botões para abrir formulários */}
-        <div style={{ marginBottom: "20px" }}>
-          <button
-            onClick={() => setAbrirFormPedido(true)}
-            style={{
-              padding: "10px 15px",
-              background: "#4CAF50",
-              color: "#fff",
-              border: "none",
-              borderRadius: "5px",
-              marginRight: "10px",
-            }}
-          >
-            + Adicionar Pedido
-          </button>
-
-          <button
-            onClick={() => setAbrirFormCliente(true)}
-            style={{
-              padding: "10px 15px",
-              background: "#2196F3",
-              color: "#fff",
-              border: "none",
-              borderRadius: "5px",
-            }}
-          >
-            + Adicionar Cliente
-          </button>
+      {pedidos.map(p => (
+        <div key={p.id}>
+          <h3>{p.nome}</h3>
+          <p>{p.andamento}</p>
         </div>
-
-        {/* Formulário de Pedido */}
-        {abrirFormPedido && (
-          <CriarPedido
-            fechar={() => setAbrirFormPedido(false)}
-            atualizarLista={fetchPedidos} // atualiza lista após criar pedido
-          />
-        )}
-
-        {/* Formulário de Cliente */}
-        {abrirFormCliente && (
-          <CadastroClientes
-            fechar={() => setAbrirFormCliente(false)}
-          />
-        )}
-
-        {/* Lista de pedidos */}
-        <h2>Pedidos</h2>
-        {pedidos.length === 0 ? (
-          <p>Nenhum pedido cadastrado.</p>
-        ) : (
-          pedidos.map((pedido) => (
-            <PedidoCard key={pedido.id} pedido={pedido} />
-          ))
-        )}
-      </div>
+      ))}
     </div>
   );
 }
-
-export default Home;
