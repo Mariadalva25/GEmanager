@@ -1,9 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const ordersController = require('../controllers/ordersController');
+const controller = require('../controllers/pedidosController');
 
-router.post('/pedidos', ordersController.cadastrarPedidos);
-
-router.get('/pedidos', ordersController.listarPedidos);
+// Certifique-se que todos os métodos existem
+router.get('/', controller.getAll);
+router.get('/:id', controller.getById); // opcional
+router.post('/', controller.create);
+router.put('/:id', controller.update);
+router.delete('/:id', controller.delete);
 
 module.exports = router;

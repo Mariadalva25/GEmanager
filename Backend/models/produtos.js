@@ -1,10 +1,42 @@
-const db = require('../config/db');
+const db = require("../config/db");
 
 const Produtos = {
-  getAll: (cb) => db.query("SELECT * FROM produtos WHERE ativo=1", cb),
-  create: (data, cb) => db.query("INSERT INTO produtos SET ?", data, cb),
-  update: (id, data, cb) => db.query("UPDATE produtos SET ? WHERE id=?", [data, id], cb),
-  delete: (id, cb) => db.query("UPDATE produtos SET ativo=0 WHERE id=?", [id], cb) // soft delete
+  getAll: (callback) => {
+    db.query("SELECT * FROM produtos", (err, results) => {
+      if (err) return callback(err);
+      callback(null, results);
+    });
+  },
+
+  getById: (id, callback) => {
+    db.query("SELECT * FROM produtos WHERE id = ?", [id], (err, results) => {
+      if (err) return callback(err);
+      callback(null, results[0]);
+    });
+  },
+
+  create: (produto, callback) => {
+    db.query("INSERT INTO produtos SET ?", produto, (err, results) => {
+      if (err) return callback(err);
+      callback(null, results);
+    });
+  },
+
+  update: (id, produto, callback) => {
+    db.query("UPDATE produtos SET ? WHERE id = ?", [produto, id], (err, results) => {
+      if (err) return callback(err);
+      if (results.affectedRows === 0) return callback(null, null);
+      callback(null, results);
+    });
+  },
+
+  delete: (id, callback) => {
+    db.query("DELETE FROM produtos WHERE id = ?", [id], (err, results) => {
+      if (err) return callback(err);
+      if (results.affectedRows === 0) return callback(null, null);
+      callback(null, results);
+    });
+  },
 };
 
 module.exports = Produtos;
