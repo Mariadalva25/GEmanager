@@ -11,22 +11,22 @@ export default function Sidebar() {
 
       <Menu>
         <Link to="/home">
-          <Item active={location.pathname === "/home"}>
+          <Item $active={location.pathname === "/home"}>
             <FaHome /><span>Home</span>
           </Item>
         </Link>
         <Link to="/clientes">
-          <Item active={location.pathname === "/clientes"}>
+          <Item $active={location.pathname === "/clientes"}>
             <FaUsers /><span>Clientes</span>
           </Item>
         </Link>
         <Link to="/produtos">
-          <Item active={location.pathname === "/produtos"}>
+          <Item $active={location.pathname === "/produtos"}>
             <FaBox /><span>Produtos</span>
           </Item>
         </Link>
         <Link to="/pedidos">
-          <Item active={location.pathname === "/pedidos"}>
+          <Item  $active={location.pathname === "/pedidos"}>
             <FaClipboardList /><span>Pedidos</span>
           </Item>
         </Link>

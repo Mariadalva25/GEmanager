@@ -1,4 +1,4 @@
-const db = require("../config/db"); // ajuste o caminho para sua conexão MySQL
+const db = require("../config/db");
 
 const Clientes = {
   getAll: (callback) => {
@@ -23,7 +23,17 @@ const Clientes = {
   },
 
   update: (id, cliente, callback) => {
-    db.query("UPDATE clientes SET ? WHERE id = ?", [cliente, id], (err, results) => {
+    const query = `
+      UPDATE clientes SET nome=?, endereco=?, telefone=?
+      WHERE id=?
+    `;
+    const params = [
+      cliente.nome,
+      cliente.endereco,
+      cliente.telefone,
+      id
+    ];
+    db.query(query, params, (err, results) => {
       if (err) return callback(err);
       if (results.affectedRows === 0) return callback(null, null);
       callback(null, results);

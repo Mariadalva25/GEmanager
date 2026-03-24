@@ -23,7 +23,20 @@ const Produtos = {
   },
 
   update: (id, produto, callback) => {
-    db.query("UPDATE produtos SET ? WHERE id = ?", [produto, id], (err, results) => {
+    // Atualização explícita para evitar erro 500
+    const query = `
+      UPDATE produtos SET nome=?, tipo_tecido=?, cor=?, quantidade=?, observacao=?
+      WHERE id=?
+    `;
+    const params = [
+      produto.nome,
+      produto.tipo_tecido,
+      produto.cor,
+      produto.quantidade,
+      produto.observacao,
+      id
+    ];
+    db.query(query, params, (err, results) => {
       if (err) return callback(err);
       if (results.affectedRows === 0) return callback(null, null);
       callback(null, results);

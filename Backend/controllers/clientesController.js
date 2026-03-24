@@ -16,9 +16,9 @@ exports.getById = (req, res) => {
 };
 
 exports.create = (req, res) => {
-  Clientes.create(req.body, (err) => {
+  Clientes.create(req.body, (err, result) => {
     if (err) return res.status(500).json(err);
-    res.json({ message: "Cliente criado!" });
+    res.json({ ...req.body, id: result.insertId });
   });
 };
 

@@ -31,6 +31,7 @@ export const Button = styled.button`
   }
 `;
 
+
 export const Card = styled.div`
   border: 1px solid #ddd;
   border-radius: 8px;

@@ -7,18 +7,10 @@ exports.getAll = (req, res) => {
   });
 };
 
-exports.getById = (req, res) => {
-  Produtos.getById(req.params.id, (err, data) => {
-    if (err) return res.status(500).json(err);
-    if (!data) return res.status(404).json({ message: "Produto não encontrado" });
-    res.json(data);
-  });
-};
-
 exports.create = (req, res) => {
-  Produtos.create(req.body, (err) => {
+  Produtos.create(req.body, (err, result) => {
     if (err) return res.status(500).json(err);
-    res.json({ message: "Produto criado!" });
+    res.json({ ...req.body, id: result.insertId });
   });
 };
 
